@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>アシスト合同会社｜写真・映像・デジタルコンテンツ制作</title>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --navy: #1a1a2e;
+      --dark: #16213e;
+      --blue: #0f3460;
+      --accent: #e94560;
+      --light: #f5f7fa;
+      --text: #333;
+      --sub: #666;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
+      color: var(--text);
+      line-height: 1.8;
+    }
+
+    /* ===== HEADER ===== */
+    header {
+      background: var(--navy);
+      color: #fff;
+      padding: 0 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 68px;
+      position: sticky;
+      top: 0;
+      z-index: 200;
+    }
+    .logo { font-size: 1.15rem; font-weight: 700; letter-spacing: 0.06em; }
+    .logo span { color: #7eb8f7; }
+    nav a {
+      color: #ccc;
+      text-decoration: none;
+      margin-left: 24px;
+      font-size: 0.88rem;
+      transition: color .2s;
+    }
+    nav a:hover { color: #fff; }
+
+    /* ===== HERO ===== */
+    .hero {
+      position: relative;
+      height: 560px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      text-align: center;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background: url('https://images.unsplash.com/photo-1611558245524-aff4541a18d2?auto=format&fit=crop&w=1600&q=85') center/cover no-repeat;
+      filter: brightness(0.4);
+    }
+    .hero-content { position: relative; z-index: 1; color: #fff; padding: 0 24px; }
+    .hero-content h1 {
+      font-size: 2.6rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      margin-bottom: 16px;
+      line-height: 1.4;
+    }
+    .hero-content p {
+      font-size: 1.05rem;
+      color: #c8ddf0;
+      margin-bottom: 32px;
+    }
+    .btn {
+      display: inline-block;
+      background: var(--accent);
+      color: #fff;
+      padding: 14px 36px;
+      border-radius: 4px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: background .2s, transform .15s;
+    }
+    .btn:hover { background: #c73652; transform: translateY(-1px); }
+
+    /* ===== SHARED ===== */
+    .section { padding: 88px 48px; }
+    .section-inner { max-width: 960px; margin: 0 auto; }
+    .section-alt { background: var(--light); }
+    .section-title {
+      font-size: 1.55rem;
+      font-weight: 700;
+      color: var(--navy);
+      text-align: center;
+      margin-bottom: 12px;
+    }
+    .section-sub {
+      text-align: center;
+      color: var(--sub);
+      font-size: 0.92rem;
+      margin-bottom: 52px;
+    }
+
+    /* ===== SERVICES ===== */
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 24px;
+    }
+    .service-card {
+      background: #fff;
+      border: 1px solid #e0e6f0;
+      border-radius: 8px;
+      padding: 32px 28px;
+      transition: box-shadow .2s, transform .2s;
+    }
+    .service-card:hover { box-shadow: 0 8px 24px rgba(0,0,0,.1); transform: translateY(-3px); }
+    .service-icon {
+      font-size: 2.2rem;
+      margin-bottom: 16px;
+      display: block;
+    }
+    .service-card h3 { font-size: 1.05rem; color: var(--navy); margin-bottom: 10px; }
+    .service-card p { font-size: 0.88rem; color: var(--sub); line-height: 1.75; }
+    .service-price {
+      margin-top: 16px;
+      font-size: 0.88rem;
+      color: var(--blue);
+      font-weight: 600;
+      border-top: 1px solid #e8edf5;
+      padding-top: 12px;
+    }
+
+    /* ===== WORKS ===== */
+    .works-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+    .work-item {
+      position: relative;
+      overflow: hidden;
+      border-radius: 6px;
+      aspect-ratio: 4/3;
+      cursor: pointer;
+    }
+    .work-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform .4s;
+    }
+    .work-item:hover img { transform: scale(1.06); }
+    .work-overlay {
+      position: absolute; inset: 0;
+      background: rgba(15,52,96,.7);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity .3s;
+      color: #fff;
+      text-align: center;
+      padding: 16px;
+    }
+    .work-item:hover .work-overlay { opacity: 1; }
+    .work-overlay h4 { font-size: 0.95rem; margin-bottom: 6px; }
+    .work-overlay p { font-size: 0.8rem; color: #aac4e0; }
+
+    /* ===== NEWSLETTER ===== */
+    .newsletter-intro {
+      max-width: 640px;
+      margin: 0 auto 48px;
+      text-align: center;
+      font-size: 0.93rem;
+      color: var(--sub);
+    }
+    .newsletter-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    .newsletter-item {
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 12px rgba(0,0,0,.08);
+      border: 1px solid #dde4f0;
+    }
+    .newsletter-item img {
+      width: 100%;
+      display: block;
+      aspect-ratio: 3/4;
+      object-fit: cover;
+    }
+    .newsletter-item-label {
+      padding: 12px 16px;
+      background: #fff;
+      font-size: 0.82rem;
+      color: var(--sub);
+      text-align: center;
+    }
+    .newsletter-item-label strong { display: block; color: var(--navy); font-size: 0.9rem; margin-bottom: 2px; }
+
+    /* ===== FLOW ===== */
+    .flow-steps {
+      display: flex;
+      gap: 0;
+      position: relative;
+    }
+    .flow-steps::before {
+      content: '';
+      position: absolute;
+      top: 36px;
+      left: calc(10% + 36px);
+      right: calc(10% + 36px);
+      height: 2px;
+      background: #dde4f0;
+      z-index: 0;
+    }
+    .flow-step {
+      flex: 1;
+      text-align: center;
+      padding: 0 12px;
+      position: relative;
+      z-index: 1;
+    }
+    .step-num {
+      width: 72px;
+      height: 72px;
+      background: var(--blue);
+      color: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 16px;
+      font-size: 1.3rem;
+      font-weight: 700;
+    }
+    .flow-step h4 { font-size: 0.92rem; color: var(--navy); margin-bottom: 8px; }
+    .flow-step p { font-size: 0.82rem; color: var(--sub); line-height: 1.65; }
+
+    /* ===== FORM ===== */
+    .form-wrap {
+      background: #fff;
+      border: 1px solid #dde4f0;
+      border-radius: 10px;
+      padding: 48px;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    .form-row { margin-bottom: 22px; }
+    .form-row label {
+      display: block;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--navy);
+      margin-bottom: 7px;
+    }
+    .required {
+      display: inline-block;
+      background: var(--accent);
+      color: #fff;
+      font-size: 0.7rem;
+      padding: 1px 6px;
+      border-radius: 3px;
+      margin-left: 6px;
+      vertical-align: middle;
+      font-weight: 500;
+    }
+    .form-row input,
+    .form-row select,
+    .form-row textarea {
+      width: 100%;
+      border: 1px solid #cdd5e0;
+      border-radius: 5px;
+      padding: 11px 14px;
+      font-size: 0.93rem;
+      font-family: inherit;
+      color: var(--text);
+      transition: border-color .2s, box-shadow .2s;
+      appearance: none;
+      background: #fff;
+    }
+    .form-row select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23666' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      padding-right: 40px;
+    }
+    .form-row input:focus,
+    .form-row select:focus,
+    .form-row textarea:focus {
+      outline: none;
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(15,52,96,.12);
+    }
+    .form-row textarea { resize: vertical; min-height: 120px; }
+    .form-note {
+      font-size: 0.82rem;
+      color: var(--sub);
+      margin-top: 6px;
+    }
+    .form-2col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .btn-submit {
+      width: 100%;
+      padding: 16px;
+      background: var(--blue);
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      letter-spacing: 0.05em;
+      margin-top: 8px;
+      transition: background .2s;
+    }
+    .btn-submit:hover { background: var(--navy); }
+
+    /* ===== PROFILE ===== */
+    .profile-wrap {
+      display: flex;
+      gap: 48px;
+      align-items: flex-start;
+    }
+    .profile-photo {
+      width: 200px;
+      flex-shrink: 0;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .profile-photo img { width: 100%; display: block; object-fit: cover; }
+    .profile-info h3 { font-size: 1.25rem; color: var(--navy); margin-bottom: 4px; }
+    .profile-info .title { font-size: 0.88rem; color: var(--sub); margin-bottom: 20px; }
+    .profile-info p { font-size: 0.92rem; color: var(--sub); line-height: 1.9; }
+
+    /* ===== COMPANY TABLE ===== */
+    .company-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .company-table tr { border-bottom: 1px solid #e8edf5; }
+    .company-table th {
+      width: 180px;
+      padding: 18px 20px;
+      text-align: left;
+      color: #555;
+      font-weight: 600;
+      font-size: 0.9rem;
+      background: var(--light);
+      vertical-align: top;
+    }
+    .company-table td {
+      padding: 18px 20px;
+      font-size: 0.92rem;
+    }
+
+    /* ===== FOOTER ===== */
+    footer {
+      background: var(--navy);
+      color: #888;
+      text-align: center;
+      padding: 36px 48px;
+      font-size: 0.83rem;
+    }
+    footer a { color: #7eb8f7; text-decoration: none; }
+
+    /* ===== MODAL ===== */
+    .modal-overlay {
+      display: none;
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,.85);
+      z-index: 500;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal-img { max-width: 90vw; max-height: 90vh; border-radius: 4px; }
+    .modal-close {
+      position: absolute;
+      top: 20px; right: 28px;
+      color: #fff;
+      font-size: 2rem;
+      cursor: pointer;
+      line-height: 1;
+      background: none;
+      border: none;
+    }
+
+    /* ===== THANKS ===== */
+    .thanks-msg {
+      display: none;
+      text-align: center;
+      padding: 40px;
+      color: var(--blue);
+    }
+    .thanks-msg h3 { font-size: 1.2rem; margin-bottom: 10px; }
+    .thanks-msg p { font-size: 0.9rem; color: var(--sub); }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 768px) {
+      header { padding: 0 20px; height: 60px; }
+      nav a { margin-left: 14px; font-size: 0.8rem; }
+      .hero { height: 440px; }
+      .hero-content h1 { font-size: 1.7rem; }
+      .section { padding: 64px 20px; }
+      .works-grid { grid-template-columns: repeat(2, 1fr); }
+      .newsletter-grid { grid-template-columns: 1fr 1fr; }
+      .newsletter-item:last-child { display: none; }
+      .flow-steps { flex-direction: column; gap: 24px; }
+      .flow-steps::before { display: none; }
+      .form-wrap { padding: 28px 20px; }
+      .form-2col { grid-template-columns: 1fr; }
+      .profile-wrap { flex-direction: column; gap: 24px; }
+      .profile-photo { width: 140px; }
+      .company-table th { width: 110px; font-size: 0.83rem; padding: 14px 12px; }
+      .company-table td { font-size: 0.85rem; padding: 14px 12px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="logo">アシスト<span>合同会社</span></div>
+  <nav>
+    <a href="#services">サービス</a>
+    <a href="#works">制作実績</a>
+    <a href="#flow">ご依頼の流れ</a>
+    <a href="#contact">お問い合わせ</a>
+    <a href="#about">会社概要</a>
+  </nav>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <h1>映像・写真・デジタルコンテンツで<br>あなたのビジョンを形に</h1>
+    <p>企画から制作・編集・配信まで、ワンストップでサポートします</p>
+    <a href="#contact" class="btn">無料でご相談する</a>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<div class="section" id="services">
+  <div class="section-inner">
+    <h2 class="section-title">サービス</h2>
+    <p class="section-sub">写真・映像の撮影から、デジタルコンテンツの企画・制作・配信まで幅広く対応します</p>
+    <div class="services-grid">
+
+      <div class="service-card">
+        <span class="service-icon">📷</span>
+        <h3>写真撮影・画像制作</h3>
+        <p>商品撮影、ポートレート、イベント記録、建築・不動産など幅広いジャンルに対応。撮影後の画像処理・レタッチまで一貫してお任せください。</p>
+        <div class="service-price">撮影：¥30,000〜 / レタッチ：¥2,000〜/枚</div>
+      </div>
+
+      <div class="service-card">
+        <span class="service-icon">🎬</span>
+        <h3>動画撮影・映像制作</h3>
+        <p>企業PR、インタビュー、商品紹介、SNS向けショート動画など多形式に対応。企画・絵コンテ作成からポストプロダクションまで一括お任せいただけます。</p>
+        <div class="service-price">撮影：¥50,000〜 / 編集：¥30,000〜</div>
+      </div>
+
+      <div class="service-card">
+        <span class="service-icon">📰</span>
+        <h3>ニュースレター・メルマガ制作</h3>
+        <p>写真選定・レイアウト・文章編集まで担当し、ブランドに合ったニュースレターを制作します。定期配信プランも対応可能です。</p>
+        <div class="service-price">1号あたり：¥20,000〜 / 月額定期：¥15,000〜</div>
+      </div>
+
+      <div class="service-card">
+        <span class="service-icon">📖</span>
+        <h3>電子書籍・コンテンツ出版</h3>
+        <p>写真集、ガイドブック、マニュアルなどの電子書籍化を支援。原稿整理・デザイン・EPUB変換・販売プラットフォームへの配信までサポートします。</p>
+        <div class="service-price">¥80,000〜（ページ数・仕様による）</div>
+      </div>
+
+      <div class="service-card">
+        <span class="service-icon">🏠</span>
+        <h3>不動産物件撮影</h3>
+        <p>居住用・商業用問わず、物件の魅力を最大限に引き出す室内外撮影を提供。間取り図作成補助や360°パノラマ撮影も対応します。</p>
+        <div class="service-price">1物件：¥15,000〜</div>
+      </div>
+
+      <div class="service-card">
+        <span class="service-icon">🎨</span>
+        <h3>デジタルコンテンツ配信支援</h3>
+        <p>SNS用画像・動画の定期制作、配信スケジュール管理、アナリティクスレポートまで包括的に対応。運用負担を丸ごとアウトソースできます。</p>
+        <div class="service-price">月額：¥30,000〜（プランによる）</div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- WORKS -->
+<div class="section section-alt" id="works">
+  <div class="section-inner">
+    <div class="works-grid">
+      <div class="work-item" onclick="openModal('https://images.unsplash.com/photo-1471341971476-ae15ff5dd4ea?auto=format&fit=crop&w=1200&q=85')">
+        <img src="https://images.unsplash.com/photo-1471341971476-ae15ff5dd4ea?auto=format&fit=crop&w=800&q=80" alt="ポートレート撮影" loading="lazy">
+        <div class="work-overlay"><h4>ポートレート撮影</h4><p>アーティスト宣材写真</p></div>
+      </div>
+      <div class="work-item" onclick="openModal('https://images.unsplash.com/photo-1603425013520-e0b30e6e37dc?auto=format&fit=crop&w=1200&q=85')">
+        <img src="https://images.unsplash.com/photo-1603425013520-e0b30e6e37dc?auto=format&fit=crop&w=800&q=80" alt="スタジオ撮影" loading="lazy">
+        <div class="work-overlay"><h4>スタジオ撮影</h4><p>プロフィール・ビジュアル制作</p></div>
+      </div>
+      <div class="work-item" onclick="openModal('https://images.unsplash.com/photo-1527011046414-4781f1f94f8c?auto=format&fit=crop&w=1200&q=85')">
+        <img src="https://images.unsplash.com/photo-1527011046414-4781f1f94f8c?auto=format&fit=crop&w=800&q=80" alt="ロケーション撮影" loading="lazy">
+        <div class="work-overlay"><h4>ロケーション撮影</h4><p>屋外フォトセッション</p></div>
+      </div>
+      <div class="work-item" onclick="openModal('https://images.unsplash.com/photo-1586732711591-12c04655338f?auto=format&fit=crop&w=1200&q=85')">
+        <img src="https://images.unsplash.com/photo-1586732711591-12c04655338f?auto=format&fit=crop&w=800&q=80" alt="ファッション撮影" loading="lazy">
+        <div class="work-overlay"><h4>ファッション撮影</h4><p>ブランドルックブック</p></div>
+      </div>
+      <div class="work-item" onclick="openModal('https://images.unsplash.com/photo-1615458508880-ec0521ce754f?auto=format&fit=crop&w=1200&q=85')">
+        <img src="https://images.unsplash.com/photo-1615458508880-ec0521ce754f?auto=format&fit=crop&w=800&q=80" alt="商品撮影" loading="lazy">
+        <div class="work-overlay"><h4>商品撮影</h4><p>EC・カタログ向けビジュアル</p></div>
+      </div>
+      <div class="work-item" onclick="openModal('https://images.unsplash.com/photo-1617463874381-85b513b3e991?auto=format&fit=crop&w=1200&q=85')">
+        <img src="https://images.unsplash.com/photo-1617463874381-85b513b3e991?auto=format&fit=crop&w=800&q=80" alt="イベント撮影" loading="lazy">
+        <div class="work-overlay"><h4>イベント撮影</h4><p>パフォーマンス・記録写真</p></div>
+      </div>
+      <div class="work-item" onclick="openModal('https://images.unsplash.com/photo-1639427203687-d0e0e76d0c4c?auto=format&fit=crop&w=1200&q=85')">
+        <img src="https://images.unsplash.com/photo-1639427203687-d0e0e76d0c4c?auto=format&fit=crop&w=800&q=80" alt="映像制作" loading="lazy">
+        <div class="work-overlay"><h4>映像制作</h4><p>プロモーションビデオ</p></div>
+      </div>
+      <div class="work-item" onclick="openModal('https://images.unsplash.com/photo-1696332367582-35148dadc897?auto=format&fit=crop&w=1200&q=85')">
+        <img src="https://images.unsplash.com/photo-1696332367582-35148dadc897?auto=format&fit=crop&w=800&q=80" alt="動画編集" loading="lazy">
+        <div class="work-overlay"><h4>動画編集・後処理</h4><p>プロ仕上げのポストプロダクション</p></div>
+      </div>
+      <div class="work-item" onclick="openModal('https://images.unsplash.com/photo-1554995207-c18c203602cb?auto=format&fit=crop&w=1200&q=85')">
+        <img src="https://images.unsplash.com/photo-1554995207-c18c203602cb?auto=format&fit=crop&w=800&q=80" alt="不動産物件撮影" loading="lazy">
+        <div class="work-overlay"><h4>不動産物件撮影</h4><p>物件の魅力を引き出すインテリア写真</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FLOW -->
+<div class="section section-alt" id="flow">
+  <div class="section-inner">
+    <h2 class="section-title">ご依頼の流れ</h2>
+    <p class="section-sub">お問い合わせからご納品まで、スムーズにお手伝いします</p>
+    <div class="flow-steps">
+      <div class="flow-step">
+        <div class="step-num">1</div>
+        <h4>お問い合わせ</h4>
+        <p>フォームまたはメールにてご要望・ご予算・スケジュールをお知らせください</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">2</div>
+        <h4>ヒアリング・お見積り</h4>
+        <p>詳細をお伺いした上で、最適なプランと費用のご提案をいたします</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">3</div>
+        <h4>ご契約・制作開始</h4>
+        <p>内容に合意いただけましたらご契約の上、制作・撮影を開始します</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">4</div>
+        <h4>確認・修正</h4>
+        <p>初稿・初校をご確認いただきます。1〜2回の修正に対応しています</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">5</div>
+        <h4>納品・お支払い</h4>
+        <p>最終データを納品し、請求書を発行します。銀行振込にてお支払いください</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CONTACT FORM -->
+<div class="section" id="contact">
+  <div class="section-inner">
+    <h2 class="section-title">お問い合わせ・お見積り依頼</h2>
+    <p class="section-sub">お気軽にご相談ください。通常2営業日以内にご返信いたします。</p>
+
+    <div class="form-wrap">
+      <div id="formArea">
+        <form id="contactForm" onsubmit="submitForm(event)">
+
+          <div class="form-2col">
+            <div class="form-row">
+              <label>お名前<span class="required">必須</span></label>
+              <input type="text" placeholder="山田 太郎" required>
+            </div>
+            <div class="form-row">
+              <label>会社名・屋号</label>
+              <input type="text" placeholder="株式会社〇〇">
+            </div>
+          </div>
+
+          <div class="form-2col">
+            <div class="form-row">
+              <label>メールアドレス<span class="required">必須</span></label>
+              <input type="email" placeholder="info@example.com" required>
+            </div>
+            <div class="form-row">
+              <label>電話番号</label>
+              <input type="tel" placeholder="090-0000-0000">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <label>ご希望のサービス<span class="required">必須</span></label>
+            <select required>
+              <option value="">選択してください</option>
+              <option>写真撮影・画像制作</option>
+              <option>動画撮影・映像制作</option>
+              <option>ニュースレター・メルマガ制作</option>
+              <option>電子書籍・コンテンツ出版</option>
+              <option>不動産物件撮影</option>
+              <option>デジタルコンテンツ配信支援</option>
+              <option>その他・複数サービス</option>
+            </select>
+          </div>
+
+          <div class="form-2col">
+            <div class="form-row">
+              <label>ご予算（目安）</label>
+              <select>
+                <option value="">未定</option>
+                <option>〜3万円</option>
+                <option>3〜10万円</option>
+                <option>10〜30万円</option>
+                <option>30万円以上</option>
+              </select>
+            </div>
+            <div class="form-row">
+              <label>ご希望の納期</label>
+              <input type="date">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <label>お問い合わせ内容<span class="required">必須</span></label>
+            <textarea placeholder="撮影場所・被写体・使用用途・参考イメージなど、詳しくお書きください。" required></textarea>
+            <p class="form-note">※ご参考画像がある場合はメールに添付してお送りください</p>
+          </div>
+
+          <button type="submit" class="btn-submit">送信する</button>
+        </form>
+      </div>
+
+      <div class="thanks-msg" id="thanksMsg">
+        <h3>お問い合わせありがとうございます</h3>
+        <p>内容を確認の上、2営業日以内にご連絡差し上げます。<br>しばらくお待ちください。</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PROFILE -->
+<div class="section section-alt" id="profile">
+  <div class="section-inner">
+    <h2 class="section-title">代表プロフィール</h2>
+    <div class="profile-wrap">
+      <div class="profile-photo">
+        <img src="images/about-me.jpeg" alt="生田修大">
+      </div>
+      <div class="profile-info">
+        <h3>生田 修大</h3>
+        <p class="title">アシスト合同会社 代表社員</p>
+        <p>
+          写真・映像制作を中心に、デジタルコンテンツの企画・制作・配信に携わるクリエイター。
+          アーティストの宣材写真、企業PRビデオ、ニュースレター・電子出版物の制作など、幅広いジャンルの案件を手がける。
+          「伝えたいものを、最も伝わる形で」をコンセプトに、クライアントの課題に真摯に向き合いながら制作に取り組んでいる。
+          2026年、アシスト合同会社を設立。千葉県を拠点に全国対応可能。
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- COMPANY -->
+<div class="section" id="about">
+  <div class="section-inner">
+    <h2 class="section-title">会社概要</h2>
+    <table class="company-table">
+      <tr><th>会社名</th><td>アシスト合同会社</td></tr>
+      <tr><th>代表社員</th><td>生田 修大</td></tr>
+      <tr><th>所在地</th><td>〒299-4301<br>千葉県長生郡一宮町一宮9803−2</td></tr>
+      <tr><th>資本金</th><td>100万円</td></tr>
+      <tr><th>設立</th><td>2026年</td></tr>
+      <tr>
+        <th>事業内容</th>
+        <td>
+          写真撮影・動画撮影・画像処理及びそれらの企画・制作・編集・販売<br>
+          デジタルコンテンツの企画・制作・販売・配信及び管理<br>
+          書籍・雑誌・電子出版物の企画・編集・製作・出版及び販売<br>
+          不動産の売買・賃貸・仲介・管理・保有及び運用<br>
+          前各号に附帯関連する一切の業務
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <p style="margin-bottom:8px;">&copy; 2026 アシスト合同会社 All Rights Reserved.</p>
+  <p>千葉県長生郡一宮町一宮9803−2</p>
+</footer>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal" onclick="closeModal()">
+  <button class="modal-close" onclick="closeModal()">✕</button>
+  <img class="modal-img" id="modalImg" src="" alt="">
+</div>
+
+<script>
+  function openModal(src) {
+    document.getElementById('modalImg').src = src;
+    document.getElementById('modal').classList.add('open');
+  }
+  function closeModal() {
+    document.getElementById('modal').classList.remove('open');
+  }
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeModal();
+  });
+
+  function submitForm(e) {
+    e.preventDefault();
+    document.getElementById('formArea').style.display = 'none';
+    document.getElementById('thanksMsg').style.display = 'block';
+    window.scrollTo({ top: document.getElementById('contact').offsetTop - 80, behavior: 'smooth' });
+  }
+</script>
+
+</body>
+</html>
